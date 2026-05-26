@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(/.claude/skills/retrodoc_diagrams/**)",
+      "Skill(retrodoc_orchestrator)",
+      "Skill(retrodoc_orchestrator:*)",
+      "Bash(grep -n 'vardefs\\\\|table_name\\\\|$fields\\\\|'\\\\''name'\\\\''' SuiteCRM/modules/Accounts/vardefs.php)",
+      "Bash(grep -n 'AOW_WorkFlow::$doNotRunInSaveLogic\\\\|class AOW_WorkFlow\\\\|public $module_dir\\\\|public $object_name\\\\|run_flows\\\\|function::processAOW' SuiteCRM/modules/AOW_WorkFlow/AOW_WorkFlow.php)"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(/.claude/skills/retrodoc_writer/**)",
+      "Edit(/.claude/skills/retrodoc_verifier/**)"
+    ]
+  }
+}

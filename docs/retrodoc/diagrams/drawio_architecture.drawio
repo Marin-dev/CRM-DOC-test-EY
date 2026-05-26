@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="retrodoc" version="22.0.0">
+  <diagram id="suitecrm-architecture" name="SuiteCRM 7.15.1 — Architecture">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="SuiteCRM 7.15.1 — Vue d'architecture exec-friendly" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1420" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="(Mono-codebase PHP 8.1+ : UI Smarty + API V8 OAuth2/JSON:API + APIs legacy + Cron + intégrations)" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="40" y="58" width="1420" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Users / Actors -->
+        <mxCell id="actor_user" value="Utilisateur final&#10;(commercial / support / admin)" style="shape=actor;html=1;fillColor=#cce5ff;strokeColor=#1f6feb;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="80" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_api" value="Client API&#10;(mobile / intégrateur)" style="shape=actor;html=1;fillColor=#cce5ff;strokeColor=#1f6feb;" vertex="1" parent="1">
+          <mxGeometry x="60" y="280" width="80" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_anon" value="Visiteur anonyme&#10;(Web-to-Lead, trackers)" style="shape=actor;html=1;fillColor=#cce5ff;strokeColor=#1f6feb;" vertex="1" parent="1">
+          <mxGeometry x="60" y="420" width="80" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Web Container -->
+        <mxCell id="web_cont" value="Web Server&#10;(Apache / IIS + PHP-FPM)" style="rounded=1;fillColor=#fffbcc;strokeColor=#999900;align=left;verticalAlign=top;fontStyle=1;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="220" y="120" width="780" height="600" as="geometry" />
+        </mxCell>
+
+        <!-- UI Smarty -->
+        <mxCell id="ui_box" value="UI Sugar — index.php&#10;include/MVC/preDispatch.php → entryPoint.php&#10;SugarApplication → ControllerFactory → SugarController&#10;ViewFactory → SugarView (Smarty)&#10;Themes (SuiteP)" style="rounded=1;fillColor=#e6f4ea;strokeColor=#34a853;align=left;verticalAlign=top;spacing=6;" vertex="1" parent="1">
+          <mxGeometry x="240" y="170" width="370" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- API V8 -->
+        <mxCell id="v8_box" value="API V8 — Api/index.php → Slim 3 + JSON:API&#10;ContainerLoader (DI) + RouteLoader&#10;AuthorizationServerMiddleware → /access_token&#10;ResourceServerMiddleware → /V8/*&#10;Controllers : Module, Relationship, Meta, User, ListView*, Logout&#10;Services : ModuleService, … → BeanManager" style="rounded=1;fillColor=#cfe2ff;strokeColor=#1f6feb;align=left;verticalAlign=top;spacing=6;" vertex="1" parent="1">
+          <mxGeometry x="630" y="170" width="350" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Legacy APIs -->
+        <mxCell id="legacy_box" value="APIs legacy (cohabitent)&#10;• soap.php → NuSOAP + PHP5Soap&#10;• service/v2..v4_1/rest.php (héritage en chaîne)&#10;• json_server.php → JsonRPCServer" style="rounded=1;fillColor=#fff0e6;strokeColor=#e8852c;align=left;verticalAlign=top;spacing=6;" vertex="1" parent="1">
+          <mxGeometry x="240" y="310" width="370" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Entry points utilitaires -->
+        <mxCell id="ep_box" value="Entry points (55) — index.php?entryPoint=X&#10;(download, export, pdf, vCard, image, WebToLeadCapture,&#10; campaign_trackerv2, removeme, ConfirmOptIn, SAML, …)&#10;Mapping : include/MVC/Controller/entry_point_registry.php" style="rounded=1;fillColor=#fff5f5;strokeColor=#d73a49;align=left;verticalAlign=top;spacing=6;" vertex="1" parent="1">
+          <mxGeometry x="630" y="350" width="350" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Domain layer -->
+        <mxCell id="domain_box" value="Domaine — SugarBean + 120+ modules métier&#10;Accounts, Contacts, Leads, Opportunities, Cases, Bugs,&#10;Campaigns, Emails, Quotes / Invoices / Contracts (AOS_*),&#10;Reports (AOR_*), Workflow (AOW_*), KB (AOK_*), Users, ACL/Roles,&#10;Schedulers, Calendar, Documents, Notes, ...&#10;Cross-cutting : RelationshipFactory, LogicHook, DynamicFields, ACL, ResourceManager" style="rounded=1;fillColor=#fef9c3;strokeColor=#a16207;align=left;verticalAlign=top;spacing=6;" vertex="1" parent="1">
+          <mxGeometry x="240" y="470" width="740" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Infra layer -->
+        <mxCell id="infra_box" value="Infra applicative&#10;• DBManagerFactory (Mysqli/Mysql/Sqlsrv/FreeTDS/Mssql)&#10;• lib/Search (Elasticsearch / AOD-Lucene / SQL / Basic)&#10;• include/SugarQueue (SugarCronJobs / SugarCronRemoteJobs)&#10;• Logger (monolog) — LoggerManager&#10;• HTMLPurifier + voku/anti-xss" style="rounded=1;fillColor=#f3e8ff;strokeColor=#8b5cf6;align=left;verticalAlign=top;spacing=6;" vertex="1" parent="1">
+          <mxGeometry x="240" y="600" width="740" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- CLI Cron -->
+        <mxCell id="cron_box" value="CLI Cron — php cron.php&#10;Driver : $sugar_config['cron_class']&#10;(def: SugarCronJobs)&#10;16 Schedulers OOTB :&#10;processAOW_Workflow, aorRunScheduledReports,&#10;runMassEmailCampaign, pollMonitoredInboxesAOP,&#10;calendarSyncJob, runElasticSearchIndexerScheduler, …" style="rounded=1;fillColor=#fff8e1;strokeColor=#a8740f;align=left;verticalAlign=top;spacing=6;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="170" width="320" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- External systems -->
+        <mxCell id="db" value="Base de données&#10;MySQL / MariaDB / MSSQL&#10;(driver runtime via DBManagerFactory)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ddd;strokeColor=#555;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="380" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="es" value="Elasticsearch ^7.x&#10;(client elasticsearch/elasticsearch)" style="rounded=1;fillColor=#ddd;strokeColor=#555;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="500" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="smtp" value="Serveur SMTP&#10;(phpmailer/phpmailer)" style="rounded=1;fillColor=#ddd;strokeColor=#555;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="580" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="imap" value="Serveur IMAP&#10;(javanile/php-imap2)" style="rounded=1;fillColor=#ddd;strokeColor=#555;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="650" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gcal" value="Google Calendar API&#10;(google/apiclient)" style="rounded=1;fillColor=#ddd;strokeColor=#555;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="720" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="idp" value="IdP SAML2 / LDAP /&#10;OAuth2 externe&#10;(onelogin/php-saml, native LDAP,&#10;league/oauth2-client)" style="rounded=1;fillColor=#ddd;strokeColor=#555;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="790" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fs" value="Stockage fichiers&#10;upload/ + cache/" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ddd;strokeColor=#555;" vertex="1" parent="1">
+          <mxGeometry x="40" y="600" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Edges (users -> web container) -->
+        <mxCell id="e_user_ui" style="endArrow=classic;html=1;rounded=0;strokeColor=#1f6feb;" edge="1" parent="1" source="actor_user" target="ui_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_user_label" value="HTTP(S) UI" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_user_ui">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_api_v8" style="endArrow=classic;html=1;rounded=0;strokeColor=#1f6feb;" edge="1" parent="1" source="actor_api" target="v8_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_api_v8_label" value="HTTPS JSON:API&#10;OAuth2 Bearer" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_api_v8">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_anon_ep" style="endArrow=classic;html=1;rounded=0;strokeColor=#d73a49;" edge="1" parent="1" source="actor_anon" target="ep_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_anon_label" value="HTTP form / tracker (auth=false)" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_anon_ep">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Edges UI/V8/Legacy/EP -> Domain -->
+        <mxCell id="e_ui_dom" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="ui_box" target="domain_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_v8_dom" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="v8_box" target="domain_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_leg_dom" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="legacy_box" target="domain_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ep_dom" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="ep_box" target="domain_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Domain -> Infra -->
+        <mxCell id="e_dom_infra" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="domain_box" target="infra_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Infra -> DB / ES / SMTP / IMAP -->
+        <mxCell id="e_inf_db" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="infra_box" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_inf_db_label" value="SQL (multi-driver)" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_inf_db">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_inf_es" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="infra_box" target="es">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_inf_es_label" value="HTTPS ES API" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_inf_es">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_dom_smtp" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="domain_box" target="smtp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_dom_smtp_label" value="SMTP / TLS" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_dom_smtp">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_cron_imap" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="cron_box" target="imap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cron_imap_label" value="IMAP poll" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_cron_imap">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_cron_gcal" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="cron_box" target="gcal">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cron_gcal_label" value="HTTPS calendarSyncJob" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_cron_gcal">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_ui_idp" style="endArrow=classic;html=1;rounded=0;dashed=1;" edge="1" parent="1" source="ui_box" target="idp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ui_idp_label" value="SAML / LDAP / OAuth2 ext." style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_ui_idp">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- FS -->
+        <mxCell id="e_dom_fs" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="domain_box" target="fs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_dom_fs_label" value="upload + cache" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_dom_fs">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Cron -> Domain (via SchedulersJob) -->
+        <mxCell id="e_cron_dom" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="cron_box" target="domain_box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cron_dom_label" value="exécute fonctions cron (function::*)" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_cron_dom">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Cron -> DB -->
+        <mxCell id="e_cron_db" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="cron_box" target="db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cron_db_label" value="schedulers + job_queue" style="edgeLabel;html=1;align=center;verticalAlign=middle;background=#fff;" vertex="1" connectable="0" parent="e_cron_db">
+          <mxGeometry x="-0.5" y="0" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Footer legend -->
+        <mxCell id="legend" value="Sources : composer.json, Api/Core/app.php, Api/V8/Config/routes.php, include/MVC/SugarApplication.php, include/database/DBManagerFactory.php, modules/Schedulers/Scheduler.php, lib/Search/ElasticSearch/*. Voir docs/retrodoc/architecture/." style="text;html=1;align=left;verticalAlign=middle;fontSize=10;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="980" width="1420" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
